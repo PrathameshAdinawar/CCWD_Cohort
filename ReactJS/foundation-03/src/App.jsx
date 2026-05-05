@@ -9,7 +9,12 @@ function App() {
   // let value = 5;
 
   const increase = () => {
-    setValue(value + 1)
+    setValue(value + 1) // Not so good
+    console.log(value)
+  }
+
+  const decrease = () => {
+    setValue(value - 1) // Not so good 
     console.log(value)
   }
 
@@ -17,6 +22,8 @@ function App() {
     <div>
       <h1>Value: {value}</h1>
       <button onClick={increase}>✅</button>
+      <button onClick={decrease}>❌</button>
+
     </div>
   )
 }
