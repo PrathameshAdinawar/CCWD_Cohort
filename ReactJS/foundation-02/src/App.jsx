@@ -73,10 +73,11 @@ function App() {
         {
           avatars.map((avatar) => (
 
-
-
             /* similar to calling a function using () react gives a way to call it use "key = {value}" */
             <AvatarCard
+
+              // to handle Common warning: it gives should have unique "key" prop to each child
+              key={avatar.id}
               level={avatar.id === 1 ? 'captian' : undefined}
               avatar={avatar} />
 
