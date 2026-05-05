@@ -60,7 +60,7 @@ function App() {
       {/* This is an example that if written like this it will still work but not the way to use it */}
       {/* <Shell title='Batman' children={'Test children'} /> */}
 
-      {/* Its a good practise to use write the html in one tag only <div></div> */}
+      {/* Its a good practise to write the html in one tag only <div></div> */}
       <Shell title='Batman'>
         <div>
           <h2>This is inside shell</h2>
