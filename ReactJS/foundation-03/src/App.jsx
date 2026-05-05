@@ -5,11 +5,11 @@ import heroImg from './assets/hero.png'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-  let value = 5;
+  const [value, setValue] = useState(5)
+  // let value = 5;
 
   const increase = () => {
-    value++;
+    setValue(value + 1)
     console.log(value)
   }
 
