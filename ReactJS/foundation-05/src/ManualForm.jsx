@@ -64,6 +64,7 @@ const ManualForm = () => {
                 <label>
                     Name
                     <input value={values.name} onChange={set('name')} />
+                    {/* if error exist then show span otherwise nothing */}
                     {errors.name && <span>{errors.name}</span>}
                 </label>
 
