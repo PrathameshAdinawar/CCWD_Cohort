@@ -1,0 +1,18 @@
+There are some setup steps for TS because Browser only accepts JS and packages that are also differently made 
+for TS to work properly with the original express, all this for better developement experience 
+
+Step 1: Setup Typescript 
+# Important packages for smooth TS coding
+ tsc --init :- creates a tsconfig.json file 
+ tsc -p :- to convert .ts file to .js file
+ npx gitignore node :- creates a .gitignore file for node 
+
+# d is what helps install any package as Devdependecy
+ npm i typescript -d :- install the TS for only developement purpose(devdependecy) so that the file size is small
+ npm i tsc-watch -d :- it a devdependecy that helps auto rerun when change 
+
+
+Step 2:
+# DT(Definitely Typed)/Type defination are Typed packages so extra step is
+ npm i @types/express -d  
+ npm i @types/node -d // nodes built in packages
