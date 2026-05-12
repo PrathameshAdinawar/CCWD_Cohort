@@ -8,6 +8,12 @@ function App() {
   const [data, setData] = useState(null)
   console.log(`${import.meta.env.VITE_API_URL}`);
 
+  // *** additional fact/knowledge ***
+  // setcount(data +1); setcount(data +1); Such code can be send in batches act as one so only + 1 will work not + 2
+  // setcpunt(()=> data + 1); setcount(() => data + 1); Such code will work as we are sending two different functions so
+  //  they will be executed separately and we will get + 2
+
+
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/all-chai`)
       .then((response) => response.json())
