@@ -43,7 +43,7 @@ function App() {
 
         {user ? (
           <h1>
-            {user.} {user.name.last}
+            {/* {user.} {user.name.last} */}
           </h1>
         ) : "No user found"}
       </div>
