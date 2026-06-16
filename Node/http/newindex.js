@@ -1,4 +1,4 @@
-// express server 
+// express server much better way then the RAW HTTP server
 const express = require('express')
 
 const app = express
@@ -6,7 +6,8 @@ const app = express
 // now u can accept json data
 app.use(express.json())
 
-app.length('/menu', (req, res) => {
+// get router handle 
+app.get('/menu', (req, res) => {
     res.json({ items: ['thali', 'lassi'] })
 })
 
@@ -20,6 +21,6 @@ const myoder = (req, res) => {
 
     res.status(200).json({
         status: 'recieved',
-        order: req.body
+        order: req.body // req.body behind the scene is taking data in chunks same as in RAW express 
     })
 }
