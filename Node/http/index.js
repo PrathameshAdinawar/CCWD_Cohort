@@ -1,6 +1,7 @@
+// To learn about how server works 
 //In this will learm how to make a raw server there are many libraries and frameworks express is one of them
 // Raw HTTP server
-const http = require('http')
+const http = require('http') // require cause common js module system
 
 const server = http.createServer((req, res) => {
 
