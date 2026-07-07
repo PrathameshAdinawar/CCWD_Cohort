@@ -1,7 +1,7 @@
 const express = require("express");
 
 function block_1_basicServer() {
-    return Promise((resolve) => {
+    return new Promise((resolve) => {
         const app = express()
 
         app.use(express.json())
@@ -23,7 +23,7 @@ function block_1_basicServer() {
         app.get('/search', (req, res) => {
             // these are query params/parameters what ever comes after ? is QueryParams
             // chaiaurcode.com/search?q=biryani&limit=5
-            const { q, limit } = req.body
+            const { q, limit } = req.query
             res.json({
                 query: q,
                 limit: limit || '10'
@@ -53,22 +53,107 @@ function block_1_basicServer() {
         const server = app.listen(0, async () => {
 
             const port = server.address().port
-            const base = `127.0.0.1:${port}`
+            const base = `http://127.0.0.1:${port}`
 
             try {
                 const menuResponse = await fetch(`${base}/menu`)
-                const menuData = menuResponse.json()
-                console.log('GET/menu', JSON.stringify(menuData))
-            } catch (error) {
+                const menuData = await menuResponse.json()
 
+                console.log('GET/menu', JSON.stringify(menuData))
+                console.log("+++++++++++++++++++++++++++++++++++")
+
+                const searchRes = await fetch(`${base}/search?q=biryani&limit=5&page=3`)
+                const searchData = await searchRes.json()
+
+                console.log('GET/search', JSON.stringify(searchData))
+                console.log("+++++++++++++++++++++++++++++++++++")
+
+                const menuItemRes = await fetch(`${base}/menu/42`)
+                const menuItemData = await menuItemRes.json()
+
+                console.log('GET/menu', JSON.stringify(menuItemData))
+                console.log("+++++++++++++++++++++++++++++++++++")
+
+                const orderRes = await fetch(`${base}/order`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        body: JSON.stringify({
+                            dish: 'biryani',
+                            quantity: 2
+                        })
+                    }
+                })
+                const orderData = await orderRes.json();
+
+                console.log('POST/order', JSON.stringify(orderData))
+                console.log("+++++++++++++++++++++++++++++++++++")
+
+
+            } catch (error) {
+                console.log(error)
             }
+
+            server.close(() => {
+                console.log("Block 1 served ....")
+                resolve()
+            })
         })
 
     })
 }
 
+function block_2_response() {
+    return new Promise((resolve) => {
+
+        //Always a 1st step
+        const app = express()
+
+        app.get('/text', (req, res) => {
+            res.send('Hello from chaicode')
+        })
+
+        app.get('/json', (req, res) => {
+            res.json({
+                framework: 'express',
+                version: '6.1.1'
+            })
+        })
+
+        app.get('/not-found', (req, res) => {
+            res.status(404).json({
+                error: 'Page not found'
+            })
+        })
+
+        app.get('/health', (req, res) => {
+            res.sendStatus(200)
+        })
+
+        //if want to redirect from old page to new page
+        app.get('/old-menu', (req, res) => {
+            res.redirect(301, '/new-menu') // status code for redirect is 301
+        })
+
+        //if u want to send xml datatype and so on many datatype using res.type() then 
+        app.get('/xml', (req, res) => {
+            res.type('application/xml').send('<dish><name> Biryani </name></dish>')
+        })
+
+        app.get('/custom-headers', (req, res) => {
+            res.set('X-powerd-By', 'ChaiCode');
+            res.set('X-request-Id', '12334');
+            res.json({
+                message: 'Custom headers set'
+            })
+            //CORS, cachinng, tracing 
+        })
+    })
+}
+
 async function main() {
     await block_1_basicServer()
+    await block_2_response()
 
     process.exit(0)
 }
