@@ -56,24 +56,28 @@ function block_1_basicServer() {
             const base = `http://127.0.0.1:${port}`
 
             try {
+                // menu
                 const menuResponse = await fetch(`${base}/menu`)
                 const menuData = await menuResponse.json()
 
                 console.log('GET/menu', JSON.stringify(menuData))
                 console.log("+++++++++++++++++++++++++++++++++++")
 
+                // search
                 const searchRes = await fetch(`${base}/search?q=biryani&limit=5&page=3`)
                 const searchData = await searchRes.json()
 
                 console.log('GET/search', JSON.stringify(searchData))
                 console.log("+++++++++++++++++++++++++++++++++++")
 
+                // menu/:id
                 const menuItemRes = await fetch(`${base}/menu/42`)
                 const menuItemData = await menuItemRes.json()
 
                 console.log('GET/menu', JSON.stringify(menuItemData))
                 console.log("+++++++++++++++++++++++++++++++++++")
 
+                // order
                 const orderRes = await fetch(`${base}/order`, {
                     method: 'POST',
                     headers: {
@@ -148,6 +152,97 @@ function block_2_response() {
             })
             //CORS, cachinng, tracing 
         })
+
+        app.get('/no-content', (req, res) => {
+            res.status(204).end()
+        })
+
+        const server = app.listen(0, async () => {
+            const port = server.address().port
+            const base = `http://127.0.0.1:${port}`
+
+            try {
+
+            } catch (error) {
+
+            }
+        })
+    })
+}
+
+function block_1_httpMethod() {
+    return new Promise((resolve) => {
+        const app = express()
+        app.use(express.json())
+
+        const routes = {
+            1: {
+                id: 1,
+                name: "Dadar - Anderi Express",
+                direction: "North"
+            },
+            2: {
+                id: 1,
+                name: "Bandar - Dadar local",
+                direction: "East"
+            }
+        }
+
+        let index = 3;
+
+        // list all trains
+        app.get('/routes', (req, res) => {
+            res.json(Object.values(routes))
+        })
+
+        //single route id
+        app.get('/routes/:id', (req, res) => {
+            const route = routes[req.params.id]
+
+            if (!route) return res.status(400).json({ error: 'No route found on this id' })
+            res.json(route)
+        })
+
+        app.post('/routes', (req, res) => {
+            const newRoute = { id: nextId++, ...req.body }
+            routes[newRoute.id] = newRoute
+            res.status(201).json(newRoute)
+        })
+
+        app.put('/routes/:id', (req, res) => {
+            const id = req.params;
+            if (!routes.id) return res.status(404).json({ error: 'id not found' });
+            routes[id] = { id: Number(id), ...req.body }
+        })
+
+        app.patch('/routes/:id', (req, res) => {
+            const id = req.params.id;
+            if (!routes[id]) return res.status(404).json({ error: 'id not found' });
+            routes[id] = { id: Number(id), ...req.body }
+
+        })
+
+        app.delete('/routes/:id', (req, res) => {
+            const id = req.params.id;
+            if (!routes[id]) return res.status(404).json({ error: 'id not found' });
+            delete routes[id]
+            res.status(204).end()
+
+        })
+
+
+
+        const server = app.listen(0, async () => {
+            const port = server.address().port
+            const base = `http://127.0.0.1:${port}`
+
+            try {
+
+            } catch (error) {
+
+            }
+        })
+
     })
 }
 
