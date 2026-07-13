@@ -263,6 +263,8 @@ function block_2_httpMethod() {
 function block_1_httpMethod() {
     return new Promise((resolve) => {
         const app = express()
+        const logs = []
+
         app.use(express.json())
 
 
@@ -271,7 +273,24 @@ function block_1_httpMethod() {
         // use is middleware
         app.use((req, res, next, error) => {
             // business logic 
-            next()
+            const logEntry = `method:${req.method} url:${req.url}`
+            logs.push(logEntry)
+            console.log(`[LOG] -- ${logs}`)
+
+            next() // it is important or else request hangs 
+        })
+
+        // middleware to check time taken by a req  
+        app.use((req, res, next) => {
+            req.startTime = Date.now()
+
+            //its an eventlistener just like onClick
+            res.on('finish', () => {
+                const duration = Date.now() - req.startTime;
+                console.log(`[TIMER] -- ${req.method} - ${req.url} took ${duration}`)
+
+                next()
+            })
         })
 
         // /files/docs/readme.md
