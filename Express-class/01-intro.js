@@ -170,7 +170,7 @@ function block_2_response() {
     })
 }
 
-function block_1_httpMethod() {
+function block_2_httpMethod() {
     return new Promise((resolve) => {
         const app = express()
         app.use(express.json())
@@ -230,6 +230,70 @@ function block_1_httpMethod() {
 
         })
 
+
+
+        const server = app.listen(0, async () => {
+            const port = server.address().port
+            const base = `http://127.0.0.1:${port}`
+
+            try {
+                const listRes = await fetch(`${base}/routes`)
+                const listData = await listRes.json()
+
+                const createRes = await fetch(`${base}/routes`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        body: JSON.stringify({
+                            name: 'Colaba-Worli',
+                            direction: 'South'
+                        })
+                    }
+                })
+
+                const created = await createRes.json()
+            } catch (error) {
+
+            }
+        })
+
+    })
+}
+
+function block_1_httpMethod() {
+    return new Promise((resolve) => {
+        const app = express()
+        app.use(express.json())
+
+
+        // request logger
+
+        // use is middleware
+        app.use((req, res, next, error) => {
+            // business logic 
+            next()
+        })
+
+        // /files/docs/readme.md
+        // /files/assests/style.css  
+        // captures eveything as String[]
+        app.get('files/*filepath', (req, res) => {
+            const filepath = req.params.filepath;
+            res.json({ filepath, type: "wildcard" })
+        })
+
+        app
+            .route('/route')
+            .get((req, res) => { })
+            .put((req, res) => { })
+            .post((req, res) => { })
+            .delete((req, res) => { })
+
+        //It runs first have to go through this
+        // before going to get,put,post and all first has to go through this  
+        app.use('/api', (req, res) => {
+            //its a prefetch match
+        })
 
 
         const server = app.listen(0, async () => {
