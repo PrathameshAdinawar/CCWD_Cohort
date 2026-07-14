@@ -265,12 +265,28 @@ function block_1_httpMethod() {
         const app = express()
         const logs = []
 
-        app.use(express.json())
+        // To limit the input of the user
+        // This is called Zero Trust architecture security is depend on backend only
+        app.use(express.json({ limit: '50kb' }))
+
+        // this is for the Spaces to be avoided in the input 
+        // extended is used to take the objects that are nested objects not compulsory only if needed
+        // also can add a limit to it also
+        app.use(express.urlencoded({ extended: true, limit: '50kb' }))
+
+        // static
+        app.use(express.static(root, {
+            dotfiles: 'ignore', // this used when a sensitive files like .env, .gitignore are tried to access
+            maxAge: 0,                  // this is like how much time browser should cache the file 
+            index: 'index.html',        // default file for "/"
+            extensions: ['html'],       // clean URLs
+            fallthrough: true,          // let API routes still work
+        }))
 
 
         // request logger
 
-        // use is middleware
+        // 'use' is middleware
         app.use((req, res, next, error) => {
             // business logic 
             const logEntry = `method:${req.method} url:${req.url}`
@@ -292,6 +308,24 @@ function block_1_httpMethod() {
                 next()
             })
         })
+
+
+        // Ratelimter Middleware
+        function rateLimiter() {
+            let count = 0;
+
+            return (req, res, next) => {
+                count++;
+                if (count > maxRequest) {
+                    return res.status(429).json({ error: "Too many requests, Please try again after sometime" })
+                }
+                next();
+            }
+        }
+
+        const limitedEndPoint = rateLimiter(3)
+
+        app.get('/limited', (req, res) => { })
 
         // /files/docs/readme.md
         // /files/assests/style.css  
