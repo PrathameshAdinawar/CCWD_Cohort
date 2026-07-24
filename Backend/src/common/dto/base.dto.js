@@ -7,7 +7,7 @@ class baseDto {
 
     static validate(data) {
         const { error, value } = this.schema.validate(data, {
-            abortEarly: false,
+            abortEarly: false, // to dont want to stop at first error, we want to get all errors
             stripUnknown: true // any other field other than that are asked are removed 
         })
 
