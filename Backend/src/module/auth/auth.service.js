@@ -20,6 +20,11 @@ const register = async ({ name, email, password, role }) => {
 
     //TODO: send an email to user with token: rawToken
 
+    const useObj = user.toObject()
+    delete userObj.password;
+    delete userObj.verificationToken;
+
+
     return useObj;
 }
 
