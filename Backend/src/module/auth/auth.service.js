@@ -20,6 +20,7 @@ const register = async ({ name, email, password, role }) => {
 
     //TODO: send an email to user with token: rawToken
 
+    // To keep things backend and not share on frontend we use this
     const useObj = user.toObject()
     delete userObj.password;
     delete userObj.verificationToken;

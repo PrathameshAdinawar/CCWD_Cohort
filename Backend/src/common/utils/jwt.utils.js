@@ -1,4 +1,36 @@
 import crypto from 'crypto'
+import jwt from 'jsonwebtoken'
+
+
+//Generate Access Token
+const generateAccessToken = (payload) => {
+
+    //Synchronously sign the payload with JWT
+    return jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
+        expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m'
+    }) // The token is generated in this format (header.payload.signature)
+
+}
+
+const verifyAccessToken = (token) => {
+    jwt.verify(token, process.env.JWT_ACCESS_SECRET)
+}
+
+
+//Generate Refresh Token
+const generateRefreshToken = (payload) => {
+
+    //Synchronously sign the payload with JWT
+    return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
+        expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d'
+    }) // The token is generated in this format (header.payload.signature)
+
+}
+
+const verifyRefreshToken = (token) => {
+    jwt.verify(token, process.env.JWT_REFRESH_SECRET)
+}
+
 
 
 const generateResetToken = () => {
@@ -11,4 +43,10 @@ const generateResetToken = () => {
     return (rawToken, hashedToken)
 }
 
-export { generateResetToken }
+export {
+    generateResetToken,
+    generateAccessToken,
+    verifyAccessToken,
+    generateRefreshToken,
+    verifyRefreshToken
+}
