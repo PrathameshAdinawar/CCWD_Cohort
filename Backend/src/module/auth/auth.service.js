@@ -49,6 +49,9 @@ const login = async ({ email, password }) => {
 
     //assume password is checked
 
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) throw ApiError.unAuthorised("Invalid email or password")
+
     if (!user.isVerified) throw ApiError.forbidden("Please verify email before login")
 
     const accessToken = generateAccessToken({ id: user._id })

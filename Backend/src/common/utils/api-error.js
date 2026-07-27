@@ -22,6 +22,10 @@ class ApiError extends Error {
     static forbidden(message = 'Forbidden - User is not verified') {
         return new ApiError(412, message)
     }
+
+    static notFound(message = 'Not found - User not found') {
+        return new ApiError(412, message)
+    }
 }
 
 
