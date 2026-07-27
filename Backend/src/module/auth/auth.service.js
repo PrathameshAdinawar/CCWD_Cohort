@@ -1,4 +1,5 @@
 
+import { emit } from 'cluster';
 import ApiError from '../../common/utils/api-error';
 import { generateAccessToken, generateRefreshToken, generateResetToken, verifyRefreshToken } from '../../common/utils/jwt.utils.js';
 import User from './auth.model.js'
@@ -101,6 +102,20 @@ const logout = async (userId) => {
     // await user.save({validateBeforeSave:false})
 
     await User.findByIdAndUpdate(userId, { refreshToken: null })
+}
+
+const forgotPassword = async (email) => {
+    const user = await User.findOne(email)
+
+    if (!user) throw ApiError.notFound("No account with this email")
+
+    const { rawToken, hashedToken } = generateResetToken()
+    user.resetPasswordToken = hashedToken
+    user.resetPasswordExpiresToken = Date.now() + 15 * 60 * 1000
+
+    await user.save()
+
+    //Todo mail krenge ji baadme
 }
 
 export { register }
