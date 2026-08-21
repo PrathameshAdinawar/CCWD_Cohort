@@ -22,16 +22,16 @@ class baseDto {
 
 // we should not store the password as it is so we Hash it 
 // Even if the DB is compromised pasword of user is still confidential
-userSchema.pre('save', async (next) => {
-    if (!this.isModified("password")) return next();
-    this.password = await bcrypt.hash(this.password, 12)
+// userSchema.pre('save', async (next) => {
+//     if (!this.isModified("password")) return next();
+//     this.password = await bcrypt.hash(this.password, 12)
 
-    next();
-})
+//     next();
+// })
 
-// custom method using mongoose method  
-userSchema.methods.comparePassword = async function (clearTextPassword) {
-    bcrypt.compare(clearTextPassword, this.password)
-}
+// // custom method using mongoose method  
+// userSchema.methods.comparePassword = async function (clearTextPassword) {
+//     bcrypt.compare(clearTextPassword, this.password)
+// }
 
 export default baseDto;

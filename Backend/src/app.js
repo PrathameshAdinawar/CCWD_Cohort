@@ -1,6 +1,6 @@
 import express from "express"
 import cookieParser from 'cookie-parser'
-import authRoute from './module/auth/auth.route'
+import authRoute from './module/auth/auth.route.js'
 
 const app = express()
 app.use(express.json())

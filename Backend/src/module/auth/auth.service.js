@@ -1,6 +1,5 @@
 
-import { emit } from 'cluster';
-import ApiError from '../../common/utils/api-error';
+import ApiError from '../../common/utils/api-error.js';
 import { generateAccessToken, generateRefreshToken, generateResetToken, verifyRefreshToken } from '../../common/utils/jwt.utils.js';
 import User from './auth.model.js'
 
