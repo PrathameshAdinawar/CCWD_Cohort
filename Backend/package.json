@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "fs": "node src/module/fs-module/fs-sync.js"
+    "fs": "node src/module/fs-module/fs-sync.js",
+    "fs-async": "node src/module/fs-module/fs-async.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "joi": "^18.2.3",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.4",
+    "multer": "^2.2.0",
     "nodemailer": "^9.0.3"
   }
 }
