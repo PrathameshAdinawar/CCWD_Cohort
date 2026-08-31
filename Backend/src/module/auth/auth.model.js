@@ -38,6 +38,11 @@ const userSchema = new mongoose.Schema({
         default: false
     },
 
+    avatar: {
+        type: String,
+        default: false
+    },
+
     verficationToken: {
         type: String,
         select: false

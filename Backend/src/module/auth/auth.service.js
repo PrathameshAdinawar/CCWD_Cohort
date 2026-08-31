@@ -140,4 +140,12 @@ const getMe = async (req, res) => {
 
 }
 
-export { register, login, logout, refresh, forgotPassword, getMe }
+const avatarUpload = async (req, res) => {
+    try {
+
+    } catch (error) {
+
+    }
+}
+
+export { register, login, logout, refresh, forgotPassword, getMe, avatarUpload }

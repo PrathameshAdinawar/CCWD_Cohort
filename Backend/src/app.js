@@ -14,73 +14,101 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
+
+/*
 // Multer: middleware to handle multipart/form-data (file uploads), since Express can't parse it natively
 //Storage config
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/uploads')
-    },
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, 'public/uploads')
+//     },
 
-    // This part of filename is just avoid the same file name conflict
-    // else 1st users data can get override by another one with same name
-    filename: function (req, file, cb) {
+//     // This part of filename is just avoid the same file name conflict
+//     // else 1st users data can get override by another one with same name
+//     filename: function (req, file, cb) {
 
-        // without the extension the file we are uploading will be useless
-        // so we extract the extension using the dependency "path"
-        const ext = path.extname(file.originalname)
+//         // without the extension the file we are uploading will be useless
+//         // so we extract the extension using the dependency "path"
+//         const ext = path.extname(file.originalname)
 
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, file.fieldname + '-' + uniqueSuffix + ext)
-    }
-})
+//         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+//         cb(null, file.fieldname + '-' + uniqueSuffix + ext)
+//     }
+// })
 
 
 // const storage = multer.memoryStorage();
 
 //Disk storage: the data is stored even if the request ends 
-const upload = multer({ storage });
+// limits , fileFilters
+// const upload = multer({
+//     storage, limits: {
+//         fileSize: 1024 * 1024 * 2 //2mb
+//     },
+//     fileFilter: (req, file, cb) => {
+//         const allowed = ["image/png", "image/jpeg", "application/pdf"]
+
+//         if (allowed.includes(file.mimetype)) {
+//             cb(null, true)
+//         }
+//         else {
+//             cb(new Error("File type not supported"), false)
+//         }
+//     }
+// });
 
 
 // In-memory storage
 // const upload = multer();
 
 // Buffer to Image covertion and store in uplaods folder
-app.post("/upload", upload.single("file"), async (req, res) => {
-    console.log(req.file.buffer);
+// app.post("/upload", upload.single("file"), async (req, res) => {
+//     console.log(req.file.buffer);
 
-    const ext = path.extname(req.file.originalname);
+//     const ext = path.extname(req.file.originalname);
 
-    const uniqueSuffix = `file-${Date.now()}-${Math.round(Math.random() * 1E9)}${ext}`
+//     const uniqueSuffix = `file-${Date.now()}-${Math.round(Math.random() * 1E9)}${ext}`
 
-    const filePath = `public/uploads/${uniqueSuffix}`
+//     const filePath = `public/uploads/${uniqueSuffix}`
 
-    await fs.writeFile(filePath, req.file.buffer)
+//     await fs.writeFile(filePath, req.file.buffer)
 
-    console.log(`file path ${filePath}`)
+//     console.log(`file path ${filePath}`)
 
-    Apireponse.ok(res, "File uploaded")
-})
-
-
-//Array of photos
-app.post("/uploadsArray", upload.array("photos"), (req, res) => {
-
-    console.log(req.file);
-
-    Apireponse.ok(res, 'File Uploaded successfully')
-
-})
+//     Apireponse.ok(res, "File uploaded")
+// })
 
 
-//Fields 
-app.post("/fields", upload.fields({ name: "avatar", maxCount: 1 }), (req, res) => {
-    console.log(req.files)
+// //Array of photos
+// app.post("/uploadsArray", upload.array("photos"), (req, res) => {
 
-    Apireponse.ok(res, "File uploaded successfully")
-})
+//     console.log(req.file);
+
+//     Apireponse.ok(res, 'File Uploaded successfully')
+
+// })
 
 
+// //Fields 
+// app.post("/fields", upload.fields({ name: "avatar", maxCount: 1 }), (req, res) => {
+//     console.log(req.files)
 
+//     Apireponse.ok(res, "File uploaded successfully")
+// })
+
+
+// //upload size limit
+// app.post("/limitSize", (req, res) => {
+//     upload.single("file")(req, res, (err) => {
+//         if (err?.code === "LIMIT_FILE_SIZE") {
+//             return res.send("File too large")
+//         }
+//         res.send("upload")
+//     })
+// })
+
+
+*/
 
 
 
