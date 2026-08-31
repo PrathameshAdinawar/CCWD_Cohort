@@ -16,26 +16,26 @@ app.use(cookieParser())
 
 // Multer: middleware to handle multipart/form-data (file uploads), since Express can't parse it natively
 //Storage config
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, 'public/uploads')
-//     },
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads')
+    },
 
-//     // This part of filename is just avoid the same file name conflict
-//     // else 1st users data can get override by another one with same name
-//     filename: function (req, file, cb) {
+    // This part of filename is just avoid the same file name conflict
+    // else 1st users data can get override by another one with same name
+    filename: function (req, file, cb) {
 
-//         // without the extension the file we are uploading will be useless
-//         // so we extract the extension using the dependency "path"
-//         const ext = path.extname(file.originalname)
+        // without the extension the file we are uploading will be useless
+        // so we extract the extension using the dependency "path"
+        const ext = path.extname(file.originalname)
 
-//         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-//         cb(null, file.fieldname + '-' + uniqueSuffix + ext)
-//     }
-// })
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix + ext)
+    }
+})
 
 
-const storage = multer.memoryStorage();
+// const storage = multer.memoryStorage();
 
 //Disk storage: the data is stored even if the request ends 
 const upload = multer({ storage });
@@ -60,6 +60,29 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 
     Apireponse.ok(res, "File uploaded")
 })
+
+
+//Array of photos
+app.post("/uploadsArray", upload.array("photos"), (req, res) => {
+
+    console.log(req.file);
+
+    Apireponse.ok(res, 'File Uploaded successfully')
+
+})
+
+
+//Fields 
+app.post("/fields", upload.fields({ name: "avatar", maxCount: 1 }), (req, res) => {
+    console.log(req.files)
+
+    Apireponse.ok(res, "File uploaded successfully")
+})
+
+
+
+
+
 
 
 app.use("/api/auth", authRoute)
