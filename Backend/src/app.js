@@ -44,6 +44,7 @@ const upload = multer({ storage });
 // In-memory storage
 // const upload = multer();
 
+// Buffer to Image covertion and store in uplaods folder
 app.post("/upload", upload.single("file"), async (req, res) => {
     console.log(req.file.buffer);
 
