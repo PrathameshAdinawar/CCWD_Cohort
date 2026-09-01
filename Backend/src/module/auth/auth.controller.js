@@ -49,7 +49,8 @@ const uploadAvatar = async (req, res) => {
 
         const result = await authService.avatarUpload(req.user.id, file);
 
-        return ApiResponse.ok(res, "Avatar uploaded successfully")
+        return ApiResponse.ok(res, "Avatar uploaded successfully", { avatarUrl: result.url })
+
     } catch (error) {
         console.error("Upload error", error)
         return ApiError.internal(res, error.message || "Failed to upload avatar")
