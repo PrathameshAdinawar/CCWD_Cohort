@@ -13,7 +13,7 @@ class baseDto {
         })
 
         if (error) {
-            const error = error.details.map((d) => d.message);
+            const errors = error.details.map((d) => d.message);
             return { errors, value: null }
         }
         return { errors: null, value }

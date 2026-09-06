@@ -13,7 +13,7 @@ const generateAccessToken = (payload) => {
 }
 
 const verifyAccessToken = (token) => {
-    jwt.verify(token, process.env.JWT_ACCESS_SECRET)
+    return jwt.verify(token, process.env.JWT_ACCESS_SECRET)
 }
 
 
@@ -28,7 +28,7 @@ const generateRefreshToken = (payload) => {
 }
 
 const verifyRefreshToken = (token) => {
-    jwt.verify(token, process.env.JWT_REFRESH_SECRET)
+    return jwt.verify(token, process.env.JWT_REFRESH_SECRET)
 }
 
 
@@ -40,7 +40,7 @@ const generateResetToken = () => {
         .update(rawToken)
         .digest('hex')
 
-    return (rawToken, hashedToken)
+    return { rawToken, hashedToken }
 }
 
 export {

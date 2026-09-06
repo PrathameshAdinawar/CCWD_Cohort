@@ -26,6 +26,10 @@ class ApiError extends Error {
     static notFound(message = 'Not found - User not found') {
         return new ApiError(412, message)
     }
+
+    static internal(message = 'Internal server error') {
+        return new ApiError(500, message)
+    }
 }
 
 

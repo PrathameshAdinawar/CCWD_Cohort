@@ -8,12 +8,14 @@ import { upload } from '../../common/middleware/multer.middleware.js'
 
 const router = Router()
 
-router.post('./register', validate(RegisterDto), controller.register)
+router.post('/register', validate(RegisterDto), controller.register)
 router.post('/login', validate(LoginDto), controller.login)
 router.post('/logout', authenticate, controller.logout)
 
 router.get('/profile', authenticate, controller.getMe);
 
 router.post('/avatar', authenticate, upload.single("avatar"), controller.uploadAvatar)
+
+router.get("/me", authenticate, controller.getMe);
 
 export default router

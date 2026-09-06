@@ -4,11 +4,12 @@ import ApiError from '../../common/utils/api-error.js';
 import { generateAccessToken, generateRefreshToken, generateResetToken, verifyRefreshToken } from '../../common/utils/jwt.utils.js';
 import User from './auth.model.js'
 import fs from "node:fs"
+import crypto from "crypto"
 
-const heshedToken = (token) => {
+const hashedToken = (token) => {
     return crypto
         .createHash('sha256') // algorithm for hashing 
-        .update(rawToken)
+        .update(token)
         .digest('hex')
 
 }
@@ -32,8 +33,8 @@ const register = async ({ name, email, password, role }) => {
 
     // To keep things backend and not share on frontend we use this
     const useObj = user.toObject()
-    delete userObj.password;
-    delete userObj.verificationToken;
+    delete useObj.password;
+    delete useObj.verificationToken;
 
 
     return useObj;
@@ -53,7 +54,7 @@ const login = async ({ email, password }) => {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) throw ApiError.unAuthorised("Invalid email or password")
 
-    if (!user.isVerified) throw ApiError.forbidden("Please verify email before login")
+    // if (!user.isVerified) throw ApiError.forbidden("Please verify email before login")
 
     const accessToken = generateAccessToken({ id: user._id })
 
@@ -62,7 +63,7 @@ const login = async ({ email, password }) => {
     user.refreshToken = hashedToken(refreshToken);
 
     //validateBeforeSave is a flag that tells mongoose to not validate everything just validate the updated thing 
-    await user.save({ validateBeforeSave })
+    await user.save({ validateBeforeSave: false })
 
     const userObj = user.toObject()
     delete userObj.password;
@@ -133,7 +134,7 @@ const verifyEmail = async (token) => {
     return user;
 }
 
-const getMe = async (req, res) => {
+const getMe = async (userId) => {
     const user = await User.findById(userId);
     if (!user) ApiError.notFound("user not found")
 
@@ -147,7 +148,7 @@ const avatarUpload = async (userId, file) => {
         const fileStream = fs.createReadStream(file.path)
         const uploadResponse = await imagekit.files.upload({
             file: fileStream,
-            fileName: file.fileName,
+            fileName: file.originalname,
             folder: "/user-avatars"
         })
 

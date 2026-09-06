@@ -8,6 +8,7 @@ import ApiError from "./common/utils/api-error.js"
 import path from "path"
 
 import fs from "fs/promises"
+import errorHandler from "./common/middleware/error.middleware.js"
 
 const app = express()
 app.use(express.json())
@@ -120,6 +121,6 @@ app.all("{*path}", (req, res) => {
     throw ApiError.notFound(`Route ${req.originalUrl} not found`);
 });
 
-// app.use(errorHandler);
+app.use(errorHandler);
 
 export default app;

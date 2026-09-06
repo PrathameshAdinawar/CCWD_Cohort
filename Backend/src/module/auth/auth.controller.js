@@ -12,13 +12,13 @@ const login = async (req, res) => {
     const { user, accessToken, refreshToken } = await authService.login(req.body)
     // ApiResponse.created(res, 'Login success', user)
 
-    res.cookie("refresh Token", refreshToken, {
+    res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7days
     })
 
-    res.cookie("access Token", refreshToken, {
+    res.cookie("accessToken", refreshToken, {
         httpOnly: true,
         secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7days
